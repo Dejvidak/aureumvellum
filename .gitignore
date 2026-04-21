@@ -1,2 +1,4 @@
 .DS_Store
 aureum-velum/
+node_modules/
+dist/

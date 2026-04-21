@@ -287,6 +287,33 @@ h3 {
   background: rgba(255, 255, 255, 0.75);
 }
 
+.page-hero {
+  display: grid;
+  min-height: 56vh;
+  padding: 148px clamp(22px, 6vw, 92px) 72px;
+  align-items: end;
+  background: var(--paper);
+}
+
+.page-hero > div {
+  max-width: 920px;
+}
+
+.page-hero h1 {
+  margin-top: 10px;
+}
+
+.page-hero p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: clamp(18px, 2vw, 24px);
+}
+
+.back-link {
+  margin: 0 0 28px;
+}
+
 .intro-band {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -382,8 +409,7 @@ h3 {
 }
 
 .quote-card span,
-.chip,
-.news-card time {
+.chip {
   color: var(--gold-dark);
   font-size: 12px;
   font-weight: 800;
@@ -409,15 +435,6 @@ h3 {
   text-align: center;
 }
 
-.split-heading {
-  display: flex;
-  max-width: none;
-  align-items: end;
-  justify-content: space-between;
-  gap: 20px;
-  text-align: left;
-}
-
 .category-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -426,7 +443,6 @@ h3 {
 
 .category-card,
 .dog-card,
-.news-card,
 .process article,
 .health-grid article,
 .contact-form {
@@ -485,8 +501,12 @@ h3 {
   transform: scale(1.04);
 }
 
+.category-card:focus-visible {
+  outline: 3px solid rgba(201, 162, 77, 0.42);
+  outline-offset: 4px;
+}
+
 .dog-grid,
-.news-grid,
 .process-grid,
 .health-grid {
   display: grid;
@@ -501,6 +521,14 @@ h3 {
   gap: 22px;
   padding: 18px;
   align-items: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dog-card:hover,
+.dog-card:focus-visible {
+  border-color: rgba(201, 162, 77, 0.42);
+  box-shadow: 0 24px 58px rgba(74, 57, 29, 0.12);
+  transform: translateY(-2px);
 }
 
 .dog-card img {
@@ -514,12 +542,119 @@ h3 {
   margin: 0 0 8px;
 }
 
+.card-link {
+  display: inline-flex;
+  margin-top: 12px;
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-link::after {
+  margin-left: 8px;
+  content: "→";
+}
+
 .dog-card p:not(.chip),
-.news-card p,
 .process p,
 .health-grid span,
-.info-list dd {
+.info-list dd,
+.profile-summary p,
+.profile-card p,
+.profile-list,
+.profile-meta dd {
   color: var(--muted);
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(34px, 6vw, 86px);
+  align-items: center;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: 640px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+.profile-summary h2 {
+  max-width: 760px;
+}
+
+.profile-summary p {
+  max-width: 700px;
+  font-size: 17px;
+}
+
+.profile-meta {
+  display: grid;
+  gap: 12px;
+  margin: 30px 0 0;
+}
+
+.profile-meta div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-meta.compact {
+  margin-top: 18px;
+}
+
+.profile-meta dt {
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.profile-meta dd {
+  margin: 0;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.profile-card {
+  min-height: 240px;
+  padding: clamp(24px, 4vw, 36px);
+  background: var(--white);
+  border: 1px solid rgba(201, 162, 77, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 18px 46px rgba(74, 57, 29, 0.07);
+}
+
+.profile-card p {
+  margin-bottom: 0;
+}
+
+.profile-list {
+  display: grid;
+  gap: 9px;
+  margin: 18px 0 0;
+  padding-left: 20px;
+}
+
+.listing-grid {
+  margin-top: 0;
+}
+
+.listing-note {
+  display: grid;
+  align-content: center;
 }
 
 .litter-section {
@@ -607,28 +742,6 @@ h3 {
 .health-grid span {
   display: block;
   margin-top: 10px;
-}
-
-.news-grid {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.news-card {
-  overflow: hidden;
-}
-
-.news-card img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-
-.news-card div {
-  padding: 24px;
-}
-
-.news-card h3 {
-  margin-top: 9px;
 }
 
 .social-section {
@@ -794,13 +907,14 @@ textarea:focus {
   .health,
   .contact,
   .litter-section,
-  .social-section {
+  .social-section,
+  .profile-layout {
     grid-template-columns: 1fr;
   }
 
   .category-grid,
-  .news-grid,
-  .process-grid {
+  .process-grid,
+  .profile-grid {
     grid-template-columns: 1fr;
   }
 
@@ -830,6 +944,11 @@ textarea:focus {
   .hero {
     min-height: 88vh;
     padding-top: 112px;
+  }
+
+  .page-hero {
+    min-height: 46vh;
+    padding-top: 118px;
   }
 
   .hero-overlay {
@@ -874,13 +993,14 @@ textarea:focus {
   }
 
   .dog-card img,
-  .news-card img,
+  .profile-photo img,
   .litter-visual img {
     height: 300px;
   }
 
-  .split-heading {
-    display: block;
+  .profile-meta div {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .social-actions,
