@@ -2,3 +2,8 @@
 aureum-velum/
 node_modules/
 dist/
+.next/
+.env
+payload.db
+payload.db-*
+media/
