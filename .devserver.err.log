@@ -40,3 +40,9 @@ https://react.dev/link/hydration-mismatch
     at <unknown> (https://react.dev/link/hydration-mismatch)
     at div (<anonymous>)
 ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+[browser] There were more warnings in other files.
+You can find a complete log in the terminal.
+[browser] There were more warnings in other files.
+You can find a complete log in the terminal.
+[browser] There were more warnings in other files.
+You can find a complete log in the terminal.
