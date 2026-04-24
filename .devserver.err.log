@@ -1,0 +1,42 @@
+[browser] There were more warnings in other files.
+You can find a complete log in the terminal.
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <div style={{position:"..."}}>
+      <div>
+      <Wrapper baseClass="template-d...">
+        <div className="template-d...">
+          <DefaultNav>
+            <NavWrapper baseClass="nav">
+              ...
+                <nav className="nav__wrap">
+                  <DefaultNavClient groups={[...]} navPreferences={{groups:{...}}}>
+                    <mK>
+                    <mK>
+                    <mK isOpen={true} label="Chov">
+                      <div className="nav-group ..." id="nav-group-...">
+                        <button>
+                        <Ir duration={0} height="auto">
+                          <div aria-hidden={false} className="rah-static..." id={undefined} ref={{current:null}} ...>
+                            <div ref={{current:null}}>
+                              <div className="nav-group_...">
++                               <div className="nav__link" id="nav-dogs">
+-                               <a className="nav__link" id="nav-dogs" href="/admin/collections/dogs">
+                                ...
+                  ...
+          ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at div (<anonymous>)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...

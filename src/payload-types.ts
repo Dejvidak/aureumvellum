@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    dogs: Dog;
+    litters: Litter;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    dogs: DogsSelect<false> | DogsSelect<true>;
+    litters: LittersSelect<false> | LittersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -149,6 +153,8 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  caption?: string | null;
+  mediaCategory?: ('dog' | 'litter' | 'site' | 'general') | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -160,6 +166,145 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogs".
+ */
+export interface Dog {
+  id: number;
+  name: string;
+  /**
+   * URL identifikátor, například amelie-aureum.
+   */
+  slug: string;
+  dogType: 'female' | 'male' | 'offspring';
+  status: 'active' | 'planned' | 'archived';
+  /**
+   * Krátký text pro kartu nebo úvod profilu.
+   */
+  headline?: string | null;
+  /**
+   * Krátké shrnutí pro výpisy a náhledy.
+   */
+  summary?: string | null;
+  /**
+   * Delší text pro detailní profil psa.
+   */
+  description?: string | null;
+  dateOfBirth?: string | null;
+  color?: string | null;
+  mother?: (number | null) | Dog;
+  father?: (number | null) | Dog;
+  /**
+   * Hlavní obrázek pro kartu, hero sekci a profil.
+   */
+  featuredImage?: (number | null) | Media;
+  /**
+   * Další upravitelné fotografie tohoto psa.
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Strukturovaný přehled zdravotních a DNA testů.
+   */
+  healthTests?:
+    | {
+        testName: string;
+        result: string;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  titlesAndAwards?:
+    | {
+        title: string;
+        id?: string | null;
+      }[]
+    | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "litters".
+ */
+export interface Litter {
+  id: number;
+  /**
+   * Například Vrh A nebo Jarní vrh 2026.
+   */
+  name: string;
+  slug: string;
+  status: 'planned' | 'expected' | 'born' | 'archived';
+  headline?: string | null;
+  /**
+   * Krátký úvod pro kartu, přehled nebo sekci na webu.
+   */
+  summary?: string | null;
+  /**
+   * Delší text a poznámky k vrhu.
+   */
+  story?: string | null;
+  mother: number | Dog;
+  father: number | Dog;
+  birthDate?: string | null;
+  expectedDate?: string | null;
+  puppyCount?: number | null;
+  availablePuppies?: number | null;
+  /**
+   * Hlavní fotografie používaná u tohoto vrhu.
+   */
+  featuredImage?: (number | null) | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Propojení na štěňata nebo odchovance patřící k tomuto vrhu.
+   */
+  puppies?: (number | Dog)[] | null;
+  /**
+   * Krátké novinky a milníky pro rodiny i návštěvníky webu.
+   */
+  updates?:
+    | {
+        title: string;
+        date?: string | null;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,6 +337,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'dogs';
+        value: number | Dog;
+      } | null)
+    | ({
+        relationTo: 'litters';
+        value: number | Litter;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -263,6 +416,8 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
+  mediaCategory?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -274,6 +429,110 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogs_select".
+ */
+export interface DogsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  dogType?: T;
+  status?: T;
+  headline?: T;
+  summary?: T;
+  description?: T;
+  dateOfBirth?: T;
+  color?: T;
+  mother?: T;
+  father?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  healthTests?:
+    | T
+    | {
+        testName?: T;
+        result?: T;
+        notes?: T;
+        id?: T;
+      };
+  titlesAndAwards?:
+    | T
+    | {
+        title?: T;
+        id?: T;
+      };
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "litters_select".
+ */
+export interface LittersSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  status?: T;
+  headline?: T;
+  summary?: T;
+  story?: T;
+  mother?: T;
+  father?: T;
+  birthDate?: T;
+  expectedDate?: T;
+  puppyCount?: T;
+  availablePuppies?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  puppies?: T;
+  updates?:
+    | T
+    | {
+        title?: T;
+        date?: T;
+        text?: T;
+        id?: T;
+      };
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

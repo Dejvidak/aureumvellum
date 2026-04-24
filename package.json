@@ -4,6 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:styles": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --minify",
+    "dev:styles": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --watch",
+    "predev": "npm run build:styles",
+    "prebuild": "npm run build:styles",
     "dev": "next dev --webpack -H 127.0.0.1",
     "build": "next build --webpack",
     "start": "next start -p ${PORT:-3000}",
@@ -27,6 +31,7 @@
     "@types/node": "22.19.9",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.7.3"
   },
   "engines": {

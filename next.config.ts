@@ -14,6 +14,28 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/feny.html',
+          destination: '/feny',
+        },
+        {
+          source: '/kryci-psi.html',
+          destination: '/kryci-psi',
+        },
+        {
+          source: '/odchovy.html',
+          destination: '/odchovy',
+        },
+        {
+          source: '/:slug.html',
+          destination: '/psi/:slug',
+        },
+      ],
+    }
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

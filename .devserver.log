@@ -1,0 +1,173 @@
+
+> aureumvellum@1.0.0 dev
+> next dev --webpack -H 127.0.0.1
+
+▲ Next.js 16.2.3 (webpack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+✓ Ready in 338ms
+
+ GET / 200 in 1437ms (next.js: 1420ms, application-code: 18ms)
+○ Compiling /admin/[[...segments]] ...
+[⣷] Pulling schema from database...
+[2K[1G[✓] Pulling schema from database...
+[04:52:59] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+ GET /admin 200 in 11.5s (next.js: 8.9s, application-code: 2.5s)
+ GET /api/users/me 200 in 2.9s (next.js: 2.8s, application-code: 27ms)
+ GET /api/payload-preferences/nav 200 in 9ms (next.js: 5ms, application-code: 4ms)
+ GET /api/payload-preferences/nav 200 in 5ms (next.js: 1563µs, application-code: 3ms)
+ GET /admin/login 200 in 289ms (next.js: 34ms, application-code: 255ms)
+ GET /admin/login 200 in 45ms (next.js: 2ms, application-code: 43ms)
+ GET /admin/create-first-user 200 in 78ms (next.js: 1729µs, application-code: 76ms)
+ GET /admin/create-first-user 200 in 37ms (next.js: 1932µs, application-code: 35ms)
+ POST /admin/create-first-user 200 in 26ms (next.js: 7ms, application-code: 18ms)
+  └─ ƒ <inline action>({"args":{"collectionSlug":"users","docPermissions":"[Object]","docPreferences":"[Object]","...":"5 items not stringified"},"name":"form-state"}) in 11ms ..//src/app/(payload)/layout.tsx
+ POST /admin/create-first-user 200 in 20ms (next.js: 6ms, application-code: 14ms)
+  └─ ƒ <inline action>({"args":{"collectionSlug":"users","docPermissions":"[Object]","docPreferences":"[Object]","...":"5 items not stringified"},"name":"form-state"}) in 9ms ..//src/app/(payload)/layout.tsx
+ POST /admin/create-first-user 200 in 13ms (next.js: 2ms, application-code: 11ms)
+  └─ ƒ <inline action>({"args":{"collectionSlug":"users","docPermissions":"[Object]","docPreferences":"[Object]","...":"5 items not stringified"},"name":"form-state"}) in 6ms ..//src/app/(payload)/layout.tsx
+ POST /api/users/first-register 200 in 153ms (next.js: 7ms, application-code: 146ms)
+ GET /admin 200 in 81ms (next.js: 3ms, application-code: 78ms)
+ GET /admin/collections/media 200 in 126ms (next.js: 16ms, application-code: 110ms)
+ GET /admin/collections/users 200 in 106ms (next.js: 3ms, application-code: 104ms)
+ GET /admin/collections/media 200 in 79ms (next.js: 3ms, application-code: 77ms)
+ GET /admin/collections/users 200 in 78ms (next.js: 9ms, application-code: 69ms)
+Generating import map
+Writing import map to C:\Users\hahah\aureumvellum\src\app\(payload)\admin\importMap.js
+[⣷] Pulling schema from database...
+[2K[1G[✓] Pulling schema from database...
+ GET /admin/collections/users?depth=1&limit=10 200 in 1244ms (next.js: 196ms, application-code: 1048ms)
+Generating import map
+No new imports found, skipping writing import map
+ GET /admin/collections/users?depth=1&limit=10 200 in 568ms (next.js: 75ms, application-code: 493ms)
+ GET /admin 200 in 402ms (next.js: 8ms, application-code: 393ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 236ms (next.js: 3ms, application-code: 234ms)
+ GET /api/payload-preferences/nav 200 in 1034ms (next.js: 999ms, application-code: 35ms)
+ GET /api/users/me 200 in 1061ms (next.js: 1020ms, application-code: 42ms)
+Generating import map
+No new imports found, skipping writing import map
+ GET /admin/collections/dogs 200 in 185ms (next.js: 2ms, application-code: 182ms)
+ GET /admin 200 in 621ms (next.js: 62ms, application-code: 559ms)
+ GET /api/users/me 200 in 9ms (next.js: 1258µs, application-code: 8ms)
+ GET /api/payload-preferences/nav 200 in 7ms (next.js: 1852µs, application-code: 5ms)
+ GET /admin/collections/litters 200 in 123ms (next.js: 3ms, application-code: 120ms)
+ GET /admin/collections/dogs 200 in 95ms (next.js: 6ms, application-code: 90ms)
+ GET /admin/collections/dogs/create 200 in 94ms (next.js: 3ms, application-code: 91ms)
+ GET /api/payload-preferences/collection-dogs 200 in 12ms (next.js: 6ms, application-code: 7ms)
+ POST /api/payload-preferences/collection-dogs 200 in 34ms (next.js: 1161µs, application-code: 33ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 140ms (next.js: 8ms, application-code: 132ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 322ms (next.js: 6ms, application-code: 316ms)
+ GET /api/users/me 200 in 12ms (next.js: 5ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 8ms (next.js: 1499µs, application-code: 7ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 115ms (next.js: 6ms, application-code: 109ms)
+ GET /api/users/me 200 in 20ms (next.js: 7ms, application-code: 13ms)
+ GET /api/payload-preferences/nav 200 in 9ms (next.js: 1695µs, application-code: 7ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 115ms (next.js: 1809µs, application-code: 114ms)
+ GET /api/users/me 200 in 11ms (next.js: 5ms, application-code: 6ms)
+ GET /api/payload-preferences/nav 200 in 8ms (next.js: 1728µs, application-code: 6ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 147ms (next.js: 12ms, application-code: 135ms)
+ GET /api/users/me 200 in 14ms (next.js: 7ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 6ms (next.js: 1186µs, application-code: 5ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 113ms (next.js: 6ms, application-code: 107ms)
+ GET /api/users/me 200 in 11ms (next.js: 5ms, application-code: 6ms)
+ GET /api/payload-preferences/nav 200 in 6ms (next.js: 1146µs, application-code: 5ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 125ms (next.js: 1718µs, application-code: 123ms)
+ GET /api/users/me 200 in 10ms (next.js: 1932µs, application-code: 8ms)
+ GET /api/payload-preferences/nav 200 in 9ms (next.js: 2ms, application-code: 7ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 144ms (next.js: 6ms, application-code: 138ms)
+ GET /api/users/me 200 in 12ms (next.js: 5ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 7ms (next.js: 1124µs, application-code: 6ms)
+ GET / 200 in 680ms (next.js: 672ms, application-code: 8ms)
+ GET /admin 200 in 598ms (next.js: 45ms, application-code: 553ms)
+ GET /api/users/me 200 in 16ms (next.js: 9ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 6ms (next.js: 1261µs, application-code: 4ms)
+ GET /admin/collections/litters 200 in 89ms (next.js: 9ms, application-code: 80ms)
+ GET /admin/collections/dogs 200 in 65ms (next.js: 1467µs, application-code: 64ms)
+Generating import map
+No new imports found, skipping writing import map
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 705ms (next.js: 172ms, application-code: 533ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 214ms (next.js: 3ms, application-code: 211ms)
+ GET /admin 200 in 458ms (next.js: 9ms, application-code: 449ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 344ms (next.js: 4ms, application-code: 340ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 213ms (next.js: 3ms, application-code: 210ms)
+ GET /api/payload-preferences/nav 200 in 1210ms (next.js: 1184ms, application-code: 26ms)
+ GET /api/users/me 200 in 1233ms (next.js: 1200ms, application-code: 33ms)
+Generating import map
+No new imports found, skipping writing import map
+ GET /admin 200 in 439ms (next.js: 48ms, application-code: 391ms)
+ GET /api/users/me 200 in 11ms (next.js: 3ms, application-code: 8ms)
+ GET /api/payload-preferences/nav 200 in 10ms (next.js: 2ms, application-code: 7ms)
+ GET /api/users/me 200 in 9ms (next.js: 2ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 8ms (next.js: 1860µs, application-code: 6ms)
+ GET /admin/collections/media 200 in 67ms (next.js: 7ms, application-code: 60ms)
+ GET /admin/collections/users 200 in 76ms (next.js: 7ms, application-code: 69ms)
+ GET /admin/collections/litters 200 in 75ms (next.js: 8ms, application-code: 67ms)
+ GET /admin/collections/dogs 200 in 76ms (next.js: 2ms, application-code: 74ms)
+ GET /admin/collections/litters?depth=1&limit=10 200 in 144ms (next.js: 2ms, application-code: 141ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 148ms (next.js: 3ms, application-code: 145ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 69ms (next.js: 3ms, application-code: 67ms)
+ GET /admin/collections/users?depth=1&limit=10 200 in 74ms (next.js: 1644µs, application-code: 72ms)
+ GET /admin/collections/media?depth=1&limit=10 200 in 196ms (next.js: 9ms, application-code: 187ms)
+ GET /admin/collections/media?depth=1&limit=10 200 in 66ms (next.js: 1584µs, application-code: 64ms)
+ GET /admin/collections/media?depth=1&limit=10 200 in 100ms (next.js: 3ms, application-code: 97ms)
+ GET /admin 200 in 83ms (next.js: 1795µs, application-code: 81ms)
+ GET /admin 200 in 67ms (next.js: 1602µs, application-code: 65ms)
+ GET /admin/collections/dogs 200 in 86ms (next.js: 8ms, application-code: 79ms)
+ POST /api/payload-preferences/nav 200 in 37ms (next.js: 8ms, application-code: 29ms)
+ POST /api/payload-preferences/nav 200 in 40ms (next.js: 1603µs, application-code: 39ms)
+ GET /admin/collections/litters 200 in 81ms (next.js: 8ms, application-code: 72ms)
+ GET /admin/collections/dogs 200 in 101ms (next.js: 2ms, application-code: 99ms)
+ GET /admin/collections/dogs/create 200 in 89ms (next.js: 2ms, application-code: 87ms)
+ GET /api/payload-preferences/collection-dogs 200 in 12ms (next.js: 6ms, application-code: 6ms)
+ GET /admin/collections/dogs/create 200 in 371ms (next.js: 8ms, application-code: 363ms)
+ GET /api/users/me 200 in 14ms (next.js: 6ms, application-code: 8ms)
+ GET /api/payload-preferences/collection-dogs 200 in 9ms (next.js: 1854µs, application-code: 7ms)
+ GET /api/users/me 200 in 7ms (next.js: 1138µs, application-code: 5ms)
+ GET /api/payload-preferences/nav 200 in 8ms (next.js: 1233µs, application-code: 7ms)
+ GET /admin/collections/litters?depth=1&limit=10 200 in 218ms (next.js: 3ms, application-code: 215ms)
+ GET /admin/collections/litters?depth=1&limit=10 200 in 125ms (next.js: 3ms, application-code: 123ms)
+ GET /admin/collections/litters?depth=1&limit=10 200 in 122ms (next.js: 9ms, application-code: 113ms)
+ GET / 200 in 626ms (next.js: 601ms, application-code: 25ms)
+ GET /admin 200 in 622ms (next.js: 41ms, application-code: 581ms)
+ GET /api/users/me 200 in 17ms (next.js: 10ms, application-code: 7ms)
+ GET /api/payload-preferences/nav 200 in 7ms (next.js: 1473µs, application-code: 5ms)
+ GET /admin/collections/litters 200 in 85ms (next.js: 8ms, application-code: 77ms)
+ GET /admin/collections/dogs 200 in 73ms (next.js: 1923µs, application-code: 71ms)
+ GET /admin/collections/litters 200 in 87ms (next.js: 7ms, application-code: 80ms)
+ GET /admin/collections/dogs 200 in 86ms (next.js: 1608µs, application-code: 84ms)
+ GET /admin/collections/dogs/create 200 in 68ms (next.js: 9ms, application-code: 59ms)
+ GET /api/payload-preferences/collection-dogs 200 in 11ms (next.js: 5ms, application-code: 7ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 95ms (next.js: 3ms, application-code: 92ms)
+ GET /admin/collections/dogs/create 200 in 97ms (next.js: 6ms, application-code: 91ms)
+ GET /admin/collections/dogs/create 200 in 174ms (next.js: 6ms, application-code: 168ms)
+ GET /api/users/me 200 in 19ms (next.js: 8ms, application-code: 11ms)
+ GET /api/payload-preferences/nav 200 in 7ms (next.js: 1259µs, application-code: 5ms)
+ GET /admin/collections/litters 200 in 110ms (next.js: 6ms, application-code: 104ms)
+ GET /admin/collections/dogs 200 in 102ms (next.js: 8ms, application-code: 94ms)
+ GET /admin/collections/dogs/5 200 in 96ms (next.js: 8ms, application-code: 88ms)
+ GET /api/payload-preferences/collection-dogs 200 in 10ms (next.js: 5ms, application-code: 5ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 121ms (next.js: 2ms, application-code: 119ms)
+ GET /admin/collections/dogs/4 200 in 76ms (next.js: 8ms, application-code: 68ms)
+ POST /api/dogs 200 in 15ms (next.js: 5ms, application-code: 10ms)
+ POST /api/dogs 200 in 10ms (next.js: 1228µs, application-code: 9ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 147ms (next.js: 3ms, application-code: 143ms)
+ GET /admin/collections/dogs/5 200 in 76ms (next.js: 6ms, application-code: 70ms)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 125ms (next.js: 7ms, application-code: 118ms)
+▲ Next.js 16.2.3 (webpack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+✓ Ready in 321ms
+
+○ Compiling /admin/[[...segments]] ...
+[⣷] Pulling schema from database...
+[2K[1G[✓] Pulling schema from database...
+[05:46:48] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+ GET /admin/collections/users?depth=1&limit=10 200 in 12.7s (next.js: 9.6s, application-code: 3.1s)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 12.7s (next.js: 9.6s, application-code: 3.1s)
+ GET /admin/collections/dogs?depth=1&limit=10 200 in 281ms (next.js: 13ms, application-code: 268ms)
+ GET /api/payload-preferences/nav 200 in 3.4s (next.js: 3.3s, application-code: 27ms)
+ GET /api/users/me 200 in 3.6s (next.js: 3.6s, application-code: 33ms)
+ GET /api/payload-preferences/nav 200 in 15ms (next.js: 7ms, application-code: 8ms)
+ GET /api/users/me 200 in 8ms (next.js: 1925µs, application-code: 6ms)
+ GET /api/payload-preferences/nav 200 in 12ms (next.js: 3ms, application-code: 9ms)
+ GET /api/users/me 200 in 11ms (next.js: 3ms, application-code: 8ms)
