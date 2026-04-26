@@ -1,0 +1,16 @@
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+Rebuilding...
+
+Done in 251ms.
+⚠ Port 3000 is in use by process 560, using available port 3001 instead.
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          560
+- Dir:          C:\Users\hahah\aureumvellum
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 560 /F to stop it.

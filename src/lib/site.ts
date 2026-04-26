@@ -454,7 +454,7 @@ export async function renderLittersPage(): Promise<string> {
   const litterCards = litters
     .map((litter) => {
       const puppies = (litter.puppies as Dog[] | null | undefined)?.length ?? 0
-      return `<article class="profile-card">
+      return `<a class="profile-card litter-card" href="/vrhy/${escapeHtml(litter.slug)}">
         <p class="chip">${escapeHtml(litter.name)}</p>
         <h3>${escapeHtml(litter.headline || litter.name)}</h3>
         <p>${escapeHtml(litter.summary || 'Podrobnosti k vrhu doplníme.')}</p>
@@ -463,7 +463,8 @@ export async function renderLittersPage(): Promise<string> {
           <div><dt>Datum</dt><dd>${escapeHtml(formatDate(litter.birthDate || litter.expectedDate))}</dd></div>
           <div><dt>Štěňata</dt><dd>${escapeHtml(String(litter.puppyCount ?? puppies))}</dd></div>
         </dl>
-      </article>`
+        <span class="card-link">Otevřít vrh</span>
+      </a>`
     })
     .join('')
 
@@ -514,6 +515,21 @@ export async function findDogBySlug(slug: string): Promise<PopulatedDog | null> 
   })
 
   return (result.docs[0] as PopulatedDog | undefined) ?? null
+}
+
+export async function findLitterBySlug(slug: string): Promise<PopulatedLitter | null> {
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'litters',
+    depth: 2,
+    limit: 1,
+    pagination: false,
+    where: {
+      and: [{ published: { equals: true } }, { slug: { equals: slug } }],
+    },
+  })
+
+  return (result.docs[0] as PopulatedLitter | undefined) ?? null
 }
 
 export async function renderDogPage(dog: PopulatedDog): Promise<string> {
@@ -586,6 +602,84 @@ export async function renderDogPage(dog: PopulatedDog): Promise<string> {
               <p>${awards}</p>
             </article>
           </div>
+        </section>
+      </main>
+      ${siteFooter()}`,
+  })
+}
+
+export async function renderLitterPage(litter: PopulatedLitter): Promise<string> {
+  const image = getLitterImage(litter, '/assets/enhanced/puppy-porch-flowers.webp')
+  const puppies = ((litter.puppies as Dog[] | null | undefined) ?? []) as PopulatedDog[]
+  const puppyCards = puppies.length
+    ? puppies.map((dog) => dogCard(dog, '/assets/enhanced/puppy-porch-flowers.webp', 'Odchovanec z vrhu')).join('')
+    : '<article class="profile-card"><h3>Profily připravujeme</h3><p>U tohoto vrhu zatím nejsou zveřejněné jednotlivé profily štěňat.</p></article>'
+
+  const updates =
+    litter.updates?.length
+      ? litter.updates
+          .map(
+            (update) => `<article class="profile-card">
+              <p class="chip">${escapeHtml(formatDate(update.date))}</p>
+              <h3>${escapeHtml(update.title)}</h3>
+              <p>${escapeHtml(update.text || 'Další podrobnosti doplníme.')}</p>
+            </article>`,
+          )
+          .join('')
+      : '<article class="profile-card"><h3>Aktuality doplníme</h3><p>Jakmile budou k vrhu nové informace, objeví se právě tady.</p></article>'
+
+  const motherName = litter.mother && typeof litter.mother === 'object' ? litter.mother.name : null
+  const fatherName = litter.father && typeof litter.father === 'object' ? litter.father.name : null
+
+  return pageShell({
+    title: `${litter.name} | ${SITE_NAME}`,
+    description: litter.summary || litter.headline || `Detail vrhu ${litter.name}.`,
+    socialImage: image,
+    body: `${siteHeader()}
+      <main>
+        <section class="page-hero">
+          <div>
+            <a class="text-link back-link" href="/odchovy.html">Zpět na odchovy</a>
+            <p class="eyebrow">Vrh</p>
+            <h1>${escapeHtml(litter.headline || litter.name)}</h1>
+            <p>${escapeHtml(litter.summary || 'Přehled vrhu a štěňat z tohoto období.')}</p>
+          </div>
+        </section>
+
+        <section class="section profile-layout">
+          <div class="profile-photo">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(litter.name)}">
+          </div>
+          <div class="profile-summary">
+            <p class="eyebrow">${escapeHtml(litter.name)}</p>
+            <h2>${escapeHtml(litter.headline || 'Přehled celého vrhu')}</h2>
+            <p>${escapeHtml(litter.story || litter.summary || 'Detailní popis vrhu doplníme.')}</p>
+            <dl class="profile-meta">
+              <div><dt>Stav</dt><dd>${escapeHtml(litter.status)}</dd></div>
+              <div><dt>Datum</dt><dd>${escapeHtml(formatDate(litter.birthDate || litter.expectedDate))}</dd></div>
+              <div><dt>Matka</dt><dd>${escapeHtml(motherName || 'doplníme')}</dd></div>
+              <div><dt>Otec</dt><dd>${escapeHtml(fatherName || 'doplníme')}</dd></div>
+              <div><dt>Štěňata</dt><dd>${escapeHtml(String(litter.puppyCount ?? puppies.length))}</dd></div>
+              <div><dt>Volná</dt><dd>${escapeHtml(String(litter.availablePuppies ?? 0))}</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="section soft">
+          <div class="section-heading">
+            <p class="eyebrow">Štěňata z vrhu</p>
+            <h2>${escapeHtml(litter.name)}</h2>
+            <p>Tady jsou zobrazená pouze štěňata přiřazená k tomuto konkrétnímu vrhu.</p>
+          </div>
+          <div class="dog-grid">${puppyCards}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Aktuality</p>
+            <h2>Historie a důležité momenty vrhu</h2>
+          </div>
+          <div class="profile-grid">${updates}</div>
         </section>
       </main>
       ${siteFooter()}`,

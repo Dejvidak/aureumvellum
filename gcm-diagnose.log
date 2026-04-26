@@ -1,0 +1,198 @@
+﻿Diagnose log at 2026-04-25T01:31:04Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.6.1+786ab03440ddc82e807a97c0e540f5247e44cec6
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+HOMEPATH=\Users\hahah
+DriverData=C:\Windows\System32\Drivers\DriverData
+COMPUTERNAME=MPC
+GIT_TRACE2_PARENT_SID=8a3263d0-3209-45be-a06d-502fe71e3d35
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+LESS=
+OneDrive=C:\Users\hahah\OneDrive
+CODEX_THREAD_ID=019dbd52-f700-7fd1-a484-d04fe2a2fa21
+SESSIONNAME=Console
+GIT_CONFIG_KEY_0=safe.directory
+TMP=C:\Users\hahah\AppData\Local\Temp
+LC_CTYPE=C.UTF-8
+USERDOMAIN=MPC
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+VSCODE_IPC_HOOK=\\.\pipe\ede57ae0-1.117.0-main-sock
+SystemDrive=C:
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+TEMP=C:\Users\hahah\AppData\Local\Temp
+LOCALAPPDATA=C:\Users\hahah\AppData\Local
+MSYSTEM=MINGW64
+TERM=xterm-256color
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 183 Stepping 1, GenuineIntel
+ProgramData=C:\ProgramData
+windir=C:\WINDOWS
+JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-8.0.422.5-hotspot
+EFC_10300_1592913036=1
+EFC_10300_3789132940=1
+PROCESSOR_REVISION=b701
+GIT_CONFIG_VALUE_0=C:\Users\hahah\aureumvellum
+PROCESSOR_LEVEL=6
+NUMBER_OF_PROCESSORS=24
+PATH=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\hahah\bin;C:\Users\hahah\.codex\tmp\arg0\codex-arg06d0tBQ;C:\Users\hahah\AppData\Local\Programs\Microsoft VS Code;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\Program Files\Eclipse Adoptium\jdk-8.0.422.5-hotspot\bin;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Mullvad VPN\resources;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\hahah\.config\herd\bin\nvm;C:\Program Files\nodejs;C:\Users\hahah\.config\herd\bin;C:\Users\hahah\.local\share\solana\install\active_release\bin;C:\Users\hahah\.cargo\bin;C:\Users\hahah\AppData\Local\Microsoft\WindowsApps;C:\Users\hahah\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\hahah\AppData\Roaming\npm;c:\Users\hahah\.vscode\extensions\openai.chatgpt-26.422.21459-win32-x64\bin\windows-x86_64
+GIT_CONFIG_COUNT=1
+ProgramFiles(x86)=C:\Program Files (x86)
+PUBLIC=C:\Users\Public
+VSCODE_NLS_CONFIG={"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"C:\\Users\\hahah\\AppData\\Local\\Programs\\Microsoft VS Code\\10c8e557c8\\resources\\app\\out\\nls.messages.json","locale":"en-us","availableLanguages":{}}
+FPS_BROWSER_USER_PROFILE_STRING=Default
+CommonProgramFiles=C:\Program Files (x86)\Common Files
+VSCODE_ESM_ENTRYPOINT=vs/workbench/api/node/extensionHostProcess
+CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_26244_NPLHKENSQFVZDFWJ
+CODEX_SANDBOX_NETWORK_DISABLED=1
+PLINK_PROTOCOL=ssh
+COLORTERM=truecolor
+ProgramW6432=C:\Program Files
+GIT_PAGER=more.com
+ProgramFiles=C:\Program Files (x86)
+EFC_10300_1262719628=1
+DEBUG=release
+EFC_10300_2775293581=1
+EFC_10300_2283032206=1
+VSCODE_CODE_CACHE_PATH=C:\Users\hahah\AppData\Roaming\Code\CachedData\10c8e557c8b9f9ed0a87f61f1c9a44bde731c409
+TMPDIR=C:\Users\hahah\AppData\Local\Temp
+SystemRoot=C:\WINDOWS
+NVM_SYMLINK=C:\Program Files\nodejs
+NVM_HOME=C:\Users\hahah\.config\herd\bin\nvm
+HOME=C:\Users\hahah
+VSCODE_HANDLES_UNCAUGHT_ERRORS=true
+CODEX_INTERNAL_ORIGINATOR_OVERRIDE=codex_vscode
+CommonProgramW6432=C:\Program Files\Common Files
+LOGONSERVER=\\MPC
+VSCODE_CWD=C:\Users\hahah\AppData\Local\Programs\Microsoft VS Code
+USERPROFILE=C:\Users\hahah
+USERDOMAIN_ROAMINGPROFILE=MPC
+APPDATA=C:\Users\hahah\AppData\Roaming
+HOMEDRIVE=C:
+RUST_LOG=warn
+VSCODE_PID=26244
+PSModulePath=C:\Users\hahah\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+ELECTRON_RUN_AS_NODE=1
+USERNAME=hahah
+PROCESSOR_ARCHITEW6432=AMD64
+FPS_BROWSER_APP_PROFILE_STRING=Internet Explorer
+PROCESSOR_ARCHITECTURE=x86
+OS=Windows_NT
+ComSpec=C:\WINDOWS\system32\cmd.exe
+PAGER=more.com
+VSCODE_CRASH_REPORTER_PROCESS_TYPE=extensionHost
+ALLUSERSPROFILE=C:\ProgramData
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\hahah\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\hahah\AppData\Local\Temp\01f74e1fa8664858457a3e8c'... OK
+Reading from temporary file 'C:\Users\hahah\AppData\Local\Temp\01f74e1fa8664858457a3e8c'... OK
+Deleting temporary file 'C:\Users\hahah\AppData\Local\Temp\01f74e1fa8664858457a3e8c'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\CodexSandboxOffline
+UserDataDirectoryPath: C:\Users\CodexSandboxOffline\.gcm
+GetCurrentDirectory(): C:\Users\hahah\aureumvellum
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: Při odesílání požadavku došlo k chybě. ---> System.Net.WebException: Ke vzdálenému serveru se nelze připojit. ---> System.Net.Sockets.SocketException: Došlo k pokusu o přístup k soketu způsobem zakázaným jeho přístupovými oprávněními 104.20.23.154:443
+   v System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   v System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   v System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- Konec trasování zásobníku pro vnitřní výjimku ---
+   v System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   v System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- Konec trasování zásobníku pro vnitřní výjimku ---
+   v System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   v System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   v System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   v GitCredentialManager.Diagnostics.NetworkingDiagnostic.<RunInternalAsync>d__4.MoveNext()
+--- Konec trasování zásobníku z předchozího místa, ze kterého byla vyvolána výjimka ---
+   v System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   v System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   v System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   v GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com... warning: HEAD request failed
+Sending HEAD request to http://httpforever.com...
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.51.0.windows.1'
+Locating current repository...Git repository at 'C:/Users/hahah/aureumvellum/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=schannel
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	credential.helper=manager
+file:C:/Program Files/Git/etc/gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/hahah/.gitconfig	user.name=MarekSebesta
+file:C:/Users/hahah/.gitconfig	user.email=sebesta-marek@centrum.cz
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.upstream.url=https://github.com/Dejvidak/aureumvellum.git
+file:.git/config	remote.upstream.fetch=+refs/heads/*:refs/remotes/upstream/*
+file:.git/config	branch.main.remote=upstream
+file:.git/config	branch.main.merge=refs/heads/main
+file:.git/config	branch.main.vscode-merge-base=origin/main
+file:.git/config	branch.feature/your-name.vscode-merge-base=origin/main
+file:.git/config	branch.marekbranch.remote=origin
+file:.git/config	branch.marekbranch.vscode-merge-base=origin/marekbranch
+file:.git/config	branch.marekbranch.merge=refs/heads/marekbranch
+file:.git/config	remote.origin.url=https://github.com/Dejvidak/aureumvellum.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+command line:	safe.directory=C:\Users\hahah\aureumvellum
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+

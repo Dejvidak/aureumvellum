@@ -458,6 +458,15 @@
     padding: clamp(24px, 4vw, 36px);
   }
 
+  .litter-card {
+    @apply block transition-[border-color,box-shadow,transform] duration-200 ease-in-out;
+  }
+
+  .litter-card:hover,
+  .litter-card:focus-visible {
+    @apply -translate-y-0.5 border-[#c9a24d6b] shadow-cardHover;
+  }
+
   .profile-card p {
     @apply mb-0;
   }
