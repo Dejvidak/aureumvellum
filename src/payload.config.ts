@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { Dogs } from './collections/Dogs'
+import { Inquiries } from './collections/Inquiries'
 import { Litters } from './collections/Litters'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
@@ -16,6 +17,30 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    components: {
+      beforeDashboard: [
+        {
+          path: './components/admin/AureumDashboardIntro',
+          exportName: 'AureumDashboardIntro',
+        },
+      ],
+      beforeLogin: [
+        {
+          path: './components/admin/AureumLoginIntro',
+          exportName: 'AureumLoginIntro',
+        },
+      ],
+      graphics: {
+        Icon: {
+          path: './components/admin/AureumAdminIcon',
+          exportName: 'AureumAdminIcon',
+        },
+        Logo: {
+          path: './components/admin/AureumAdminLogo',
+          exportName: 'AureumAdminLogo',
+        },
+      },
+    },
     meta: {
       titleSuffix: ' | Aureum Vellum Admin',
     },
@@ -24,7 +49,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Dogs, Litters],
+  collections: [Users, Media, Dogs, Litters, Inquiries],
   db: sqliteAdapter({
     client: {
       url: process.env.DATABASE_URL || 'file:./payload.db',

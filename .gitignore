@@ -7,3 +7,5 @@ dist/
 payload.db
 payload.db-*
 media/
+.devserver*.log
+gcm-diagnose.log

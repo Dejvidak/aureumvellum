@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:styles": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --minify",
+    "build:styles": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --minify && tailwindcss -i ./src/styles/admin-tailwind.css -o ./src/app/admin-tailwind.generated.css --minify",
     "dev:styles": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --watch",
+    "dev:admin-styles": "tailwindcss -i ./src/styles/admin-tailwind.css -o ./src/app/admin-tailwind.generated.css --watch",
     "predev": "npm run build:styles",
     "prebuild": "npm run build:styles",
     "dev": "next dev --webpack -H 127.0.0.1",

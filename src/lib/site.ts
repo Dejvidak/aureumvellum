@@ -17,6 +17,8 @@ type PopulatedLitter = Litter & {
 }
 
 const SITE_NAME = 'Aureum Vellum'
+const INSTAGRAM_URL = process.env.SITE_INSTAGRAM_URL?.trim() || ''
+const FACEBOOK_URL = process.env.SITE_FACEBOOK_URL?.trim() || ''
 const SITE_TAGLINE = 'Chovatelská stanice retrívrů'
 const DEFAULT_SOCIAL_IMAGE = '/assets/enhanced/sana-orchard-smile.webp'
 
@@ -30,7 +32,7 @@ function escapeHtml(value: string | null | undefined): string {
 }
 
 function formatDate(date: string | null | undefined): string {
-  if (!date) return 'doplníme'
+  if (!date) return 'Doplníme'
 
   return new Intl.DateTimeFormat('cs-CZ', {
     day: 'numeric',
@@ -53,6 +55,65 @@ function getDogImage(dog: Partial<PopulatedDog>, fallback: string): string {
 
 function getLitterImage(litter: Partial<PopulatedLitter>, fallback: string): string {
   return getMediaUrl(litter.featuredImage, fallback)
+}
+
+function getLitterStatusLabel(status: PopulatedLitter['status'] | null | undefined): string {
+  switch (status) {
+    case 'planned':
+      return 'Plánováno'
+    case 'expected':
+      return 'Očekávaný'
+    case 'born':
+      return 'Narozený'
+    case 'archived':
+      return 'Archivovaný'
+    default:
+      return 'Doplníme'
+  }
+}
+
+function joinClasses(...values: Array<string | false | null | undefined>): string {
+  return values.filter(Boolean).join(' ')
+}
+
+function renderSocialLinks(className = ''): string {
+  const iconLinkClass =
+    'grid h-10 w-10 place-items-center rounded-full border border-brand-gold/30 text-brand-goldDark transition duration-200 hover:-translate-y-0.5 hover:bg-brand-gold hover:text-white'
+  const iconClass = 'h-[18px] w-[18px] fill-current'
+  const links = [
+    INSTAGRAM_URL
+      ? `<a class="${iconLinkClass}" href="${escapeHtml(INSTAGRAM_URL)}" target="_blank" rel="noreferrer" aria-label="Instagram">
+          <svg class="${iconClass}" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2Zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm5-2.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
+        </a>`
+      : '',
+    FACEBOOK_URL
+      ? `<a class="${iconLinkClass}" href="${escapeHtml(FACEBOOK_URL)}" target="_blank" rel="noreferrer" aria-label="Facebook">
+          <svg class="${iconClass}" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 8.2V6.7c0-.7.5-.9 1-.9h2.1V2.2L14.4 2C11.2 2 9.5 3.9 9.5 6.4v1.8H7v3.9h2.5V22h4.1v-9.9h3.1l.6-3.9h-3.7Z"/></svg>
+        </a>`
+      : '',
+  ].filter(Boolean)
+
+  if (!links.length) {
+    return ''
+  }
+
+  return `<div class="${joinClasses('flex items-center gap-2', className)}" aria-label="Sociální sítě">
+      ${links.join('')}
+    </div>`
+}
+
+function buttonClass(variant: 'primary' | 'ghost' = 'primary'): string {
+  return joinClasses(
+    'inline-flex min-h-12 items-center justify-center rounded-xl border px-5 py-3 text-center text-xs font-extrabold uppercase tracking-[0.12em] transition duration-200',
+    'hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:transform-none',
+    variant === 'primary'
+      ? 'border-brand-gold bg-brand-gold text-white hover:border-brand-goldDark hover:bg-brand-goldDark'
+      : 'border-brand-gold/40 bg-white/70 text-brand-goldDark hover:bg-white',
+  )
+}
+
+function eyebrowClass(): string {
+  return 'mb-3 text-[11px] font-extrabold uppercase tracking-[0.22em] text-brand-goldDark'
 }
 
 function pageShell({
@@ -79,10 +140,10 @@ function pageShell({
     <meta property="og:image" content="${escapeHtml(socialImage)}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
   </head>
-  <body>
+  <body class="bg-brand-white text-brand-ink">
     ${body}
     <script type="module" src="/script.js"></script>
   </body>
@@ -90,67 +151,103 @@ function pageShell({
 }
 
 function siteHeader(): string {
-  return `<header class="site-header" data-header>
-    <a class="brand" href="/#domu" aria-label="${SITE_NAME} domů">
-      <span class="brand-mark">AV</span>
-      <span>
-        <strong>${SITE_NAME}</strong>
-        <small>${SITE_TAGLINE}</small>
-      </span>
-    </a>
+  const navLinkClass =
+    'relative py-2 text-sm font-semibold text-stone-700 transition after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-center after:scale-x-0 after:bg-brand-gold after:transition-transform after:duration-200 hover:text-stone-900 hover:after:scale-x-100'
 
-    <button class="nav-toggle" type="button" aria-label="Otevřít menu" aria-expanded="false" data-nav-toggle>
-      <span></span>
-      <span></span>
-    </button>
-
-    <nav class="main-nav" data-nav>
-      <a href="/#o-nas">O nás</a>
-      <a href="/#psi">Naši psi</a>
-      <a href="/#stenata">Štěňata</a>
-      <a href="/#zdravi">Zdraví</a>
-      <a href="/#kontakt">Kontakt</a>
-    </nav>
-
-    <div class="social-links header-social" aria-label="Sociální sítě">
-      <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2Zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm5-2.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
+  return `<header class="fixed inset-x-0 top-0 z-30 border-b border-black/5 bg-white/80 backdrop-blur-xl transition duration-200" data-header>
+    <div class="mx-auto flex max-w-[1440px] items-center gap-4 px-4 py-4 sm:px-6 lg:px-10">
+      <a class="inline-flex min-w-0 items-center gap-3" href="/#domu" aria-label="${SITE_NAME} domů">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand-gold/40 bg-white text-[20px] font-serif font-bold text-brand-goldDark">AV</span>
+        <span class="min-w-0">
+          <strong class="block truncate font-serif text-[26px] leading-none text-[#2e2a25]">${SITE_NAME}</strong>
+          <small class="mt-1 block truncate text-[11px] font-bold uppercase tracking-[0.12em] text-brand-muted">${SITE_TAGLINE}</small>
+        </span>
       </a>
-      <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 8.2V6.7c0-.7.5-.9 1-.9h2.1V2.2L14.4 2C11.2 2 9.5 3.9 9.5 6.4v1.8H7v3.9h2.5V22h4.1v-9.9h3.1l.6-3.9h-3.7Z"/></svg>
-      </a>
+
+      <div class="ml-auto flex items-center gap-3 md:hidden">
+        ${renderSocialLinks('hidden sm:flex')}
+        <button class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-gold/30 bg-white/80 text-brand-goldDark" type="button" aria-label="Otevřít menu" aria-expanded="false" data-nav-toggle>
+          <span class="flex flex-col gap-1.5">
+            <span class="block h-0.5 w-5 rounded-full bg-current"></span>
+            <span class="block h-0.5 w-5 rounded-full bg-current"></span>
+          </span>
+        </button>
+      </div>
+
+      <nav class="absolute left-4 right-4 top-[calc(100%+0.75rem)] hidden flex-col gap-3 rounded-[28px] border border-black/5 bg-white/95 p-5 shadow-card md:static md:ml-auto md:flex md:flex-row md:items-center md:justify-center md:gap-8 md:border-0 md:bg-transparent md:p-0 md:shadow-none" data-nav>
+        <a class="${navLinkClass}" href="/#o-nas">O nás</a>
+        <a class="${navLinkClass}" href="/#psi">Naši psi</a>
+        <a class="${navLinkClass}" href="/#stenata">Štěňata</a>
+        <a class="${navLinkClass}" href="/#zdravi">Zdraví</a>
+        <a class="${navLinkClass}" href="/#kontakt">Kontakt</a>
+      </nav>
+
+      <div class="ml-4 hidden md:flex">
+        ${renderSocialLinks()}
+      </div>
     </div>
   </header>`
 }
 
 function siteFooter(): string {
-  return `<footer class="site-footer">
-    <div>
-      <strong>${SITE_NAME}</strong>
-      <span>${SITE_TAGLINE}</span>
-    </div>
-    <p>© 2026 Chovatelská stanice Aureum Vellum. Zlatý začátek života.</p>
-    <div class="social-links">
-      <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2Zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm5-2.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
-      </a>
-      <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 8.2V6.7c0-.7.5-.9 1-.9h2.1V2.2L14.4 2C11.2 2 9.5 3.9 9.5 6.4v1.8H7v3.9h2.5V22h4.1v-9.9h3.1l.6-3.9h-3.7Z"/></svg>
-      </a>
+  return `<footer class="border-t border-black/8 bg-[#f6f1e8] px-4 py-10 sm:px-6 lg:px-10">
+    <div class="mx-auto flex max-w-[1440px] flex-col gap-6 text-sm text-brand-muted md:flex-row md:items-end md:justify-between">
+      <div>
+        <strong class="block font-serif text-[28px] leading-none text-[#2e2a25]">${SITE_NAME}</strong>
+        <span class="mt-2 block text-[11px] font-bold uppercase tracking-[0.12em]">${SITE_TAGLINE}</span>
+      </div>
+      <p class="max-w-xl text-[15px]">© 2026 Chovatelská stanice Aureum Vellum. Zlatý začátek života.</p>
+      ${renderSocialLinks('md:self-center')}
     </div>
   </footer>`
 }
 
+function renderMetaList(
+  items: Array<{ label: string; value: string }>,
+  columns: 'compact' | 'wide' = 'wide',
+): string {
+  return `<dl class="${joinClasses(
+    'grid gap-4 text-sm text-brand-muted',
+    columns === 'wide' ? 'sm:grid-cols-2' : 'sm:grid-cols-1',
+  )}">
+      ${items
+        .map(
+          ({ label, value }) => `<div class="border-t border-black/10 pt-3">
+            <dt class="text-[11px] font-extrabold uppercase tracking-[0.16em] text-brand-goldDark">${escapeHtml(label)}</dt>
+            <dd class="mt-2 text-[18px] text-[#2f2a24]">${escapeHtml(value)}</dd>
+          </div>`,
+        )
+        .join('')}
+    </dl>`
+}
+
+function renderSectionHeading(eyebrow: string, title: string, text?: string): string {
+  return `<div class="mx-auto mb-12 max-w-[840px] text-center">
+      <p class="${eyebrowClass()}">${escapeHtml(eyebrow)}</p>
+      <h2 class="text-[#2e2a25]">${escapeHtml(title)}</h2>
+      ${text ? `<p class="mx-auto mt-5 max-w-[680px] text-[18px] text-brand-muted">${escapeHtml(text)}</p>` : ''}
+    </div>`
+}
+
 function dogCard(dog: PopulatedDog, fallback: string, chip: string): string {
-  return `<a class="dog-card" href="/${escapeHtml(dog.slug)}.html">
-    <img src="${escapeHtml(getDogImage(dog, fallback))}" alt="${escapeHtml(dog.name)}" loading="lazy">
-    <div>
-      <p class="chip">${escapeHtml(chip)}</p>
-      <h3>${escapeHtml(dog.name)}</h3>
-      <p>${escapeHtml(dog.summary || dog.headline || 'Profil psa připravujeme.')}</p>
-      <span class="card-link">Zobrazit profil</span>
+  return `<a class="group overflow-hidden rounded-[28px] border border-black/8 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover" href="/${escapeHtml(dog.slug)}.html">
+    <img class="h-[320px] w-full object-cover" src="${escapeHtml(getDogImage(dog, fallback))}" alt="${escapeHtml(dog.name)}" loading="lazy">
+    <div class="grid gap-4 p-6">
+      <div>
+        <p class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">${escapeHtml(chip)}</p>
+        <h3 class="text-[#2e2a25] transition group-hover:text-brand-goldDark">${escapeHtml(dog.name)}</h3>
+      </div>
+      <p class="text-[16px] text-brand-muted">${escapeHtml(dog.summary || dog.headline || 'Profil psa připravujeme.')}</p>
+      <span class="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark">Zobrazit profil <span aria-hidden="true">→</span></span>
     </div>
   </a>`
+}
+
+function emptyCard(title: string, text: string): string {
+  return `<article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+    <h3 class="text-[#2e2a25]">${escapeHtml(title)}</h3>
+    <p class="mt-4 text-[16px] text-brand-muted">${escapeHtml(text)}</p>
+  </article>`
 }
 
 async function getPayloadClient() {
@@ -168,10 +265,7 @@ export async function getSiteData() {
       pagination: false,
       sort: 'name',
       where: {
-        and: [
-          { published: { equals: true } },
-          { dogType: { equals: 'female' } },
-        ],
+        and: [{ published: { equals: true } }, { dogType: { equals: 'female' } }],
       },
     }),
     payload.find({
@@ -181,10 +275,7 @@ export async function getSiteData() {
       pagination: false,
       sort: 'name',
       where: {
-        and: [
-          { published: { equals: true } },
-          { dogType: { equals: 'male' } },
-        ],
+        and: [{ published: { equals: true } }, { dogType: { equals: 'male' } }],
       },
     }),
     payload.find({
@@ -194,10 +285,7 @@ export async function getSiteData() {
       pagination: false,
       sort: 'name',
       where: {
-        and: [
-          { published: { equals: true } },
-          { dogType: { equals: 'offspring' } },
-        ],
+        and: [{ published: { equals: true } }, { dogType: { equals: 'offspring' } }],
       },
     }),
     payload.find({
@@ -256,151 +344,180 @@ export async function renderHomePage(): Promise<string> {
       'Aureum Vellum je chovatelská stanice retrívrů zaměřená na zdraví, vyrovnanou povahu a laskavý rodinný odchov.',
     body: `${siteHeader()}
       <main>
-        <section class="hero" id="domu">
-          <picture>
+        <section class="relative isolate grid min-h-screen items-end overflow-hidden px-4 pb-16 pt-32 sm:px-6 lg:px-10 lg:pb-20 lg:pt-40" id="domu">
+          <picture class="absolute inset-0 -z-20">
             <source media="(max-width: 760px)" srcset="/assets/enhanced/sana-orchard-smile.webp">
-            <img src="/assets/enhanced/sana-orchard-smile.webp" alt="Světlý retrívr v sadu" fetchpriority="high">
+            <img class="h-full w-full object-cover" src="/assets/enhanced/sana-orchard-smile.webp" alt="Světlý retrívr v sadu" fetchpriority="high">
           </picture>
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <p class="eyebrow">Zlatý začátek života</p>
-            <h1>${SITE_NAME}</h1>
-            <p>Chovatelská stanice retrívrů vzniklá z lásky k jejich laskavé povaze, inteligenci a oddanosti rodině.</p>
-            <div class="hero-actions">
-              <a class="button primary" href="#stenata">Aktuální vrh</a>
-              <a class="button ghost" href="#kontakt">Mám zájem o štěně</a>
+          <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.82)_42%,rgba(255,255,255,0.16)_74%),linear-gradient(180deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.88)_100%)]"></div>
+          <div class="mx-auto w-full max-w-[1440px]">
+            <div class="max-w-[760px]">
+              <p class="${eyebrowClass()}">Zlatý začátek života</p>
+              <h1 class="max-w-[10ch] text-[#2e2a25]">${SITE_NAME}</h1>
+              <p class="mt-6 max-w-[620px] text-[19px] leading-8 text-[#4f4940] sm:text-[22px]">Chovatelská stanice retrívrů vzniklá z lásky k jejich laskavé povaze, inteligenci a oddanosti rodině.</p>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a class="${buttonClass('primary')}" href="#stenata">Aktuální vrh</a>
+                <a class="${buttonClass('ghost')}" href="#kontakt">Mám zájem o štěně</a>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="intro-band">
-          <div class="metric">
-            <strong>Domácí odchov</strong>
-            <span>štěňata vyrůstají v rodinném prostředí</span>
+        <section class="grid border-y border-black/10 bg-[#efe7da] md:grid-cols-3">
+          <div class="bg-white px-6 py-8 lg:px-10">
+            <strong class="block font-serif text-[32px] leading-[1.05] text-[#2e2a25]">Domácí odchov</strong>
+            <span class="mt-3 block text-[15px] text-brand-muted">Štěňata vyrůstají v rodinném prostředí</span>
           </div>
-          <div class="metric">
-            <strong>Zdraví a povaha</strong>
-            <span>pečlivý výběr spojení a vyšetření</span>
+          <div class="border-y border-black/10 bg-white px-6 py-8 md:border-x md:border-y-0 lg:px-10">
+            <strong class="block font-serif text-[32px] leading-[1.05] text-[#2e2a25]">Zdraví a povaha</strong>
+            <span class="mt-3 block text-[15px] text-brand-muted">Pečlivý výběr spojení a vyšetření</span>
           </div>
-          <div class="metric">
-            <strong>Dlouhodobý kontakt</strong>
-            <span>podpora rodin nekončí odběrem</span>
+          <div class="bg-white px-6 py-8 lg:px-10">
+            <strong class="block font-serif text-[32px] leading-[1.05] text-[#2e2a25]">Dlouhodobý kontakt</strong>
+            <span class="mt-3 block text-[15px] text-brand-muted">Podpora rodin nekončí odběrem</span>
           </div>
         </section>
 
-        <section class="section two-column" id="o-nas">
-          <div class="section-copy">
-            <p class="eyebrow">O nás</p>
-            <h2>Tady psi žijí jako členové rodiny.</h2>
-            <p>Aureum Vellum stojí na klidném domácím zázemí, každodenním kontaktu s lidmi a respektu k povaze retrívra.</p>
-            <p>Každý vrh plánujeme s rozvahou. Zajímá nás zdraví rodičů, jejich temperament, typický exteriér i to, aby se štěňata dostala do zodpovědných rodin.</p>
-            <a class="text-link" href="#psi">Poznat naše psy</a>
-          </div>
-          <div class="image-stack">
-            <img src="/assets/enhanced/sana-profile-close.webp" alt="Profil světlého retrívra" loading="lazy">
-            <div class="quote-card">
-              <span>Filozofie chovu</span>
-              <strong>Zdraví, povaha, socializace a laskavý začátek.</strong>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28" id="o-nas">
+          <div class="mx-auto grid max-w-[1440px] items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(340px,1.1fr)] lg:gap-20">
+            <div class="max-w-[680px]">
+              <p class="${eyebrowClass()}">O nás</p>
+              <h2 class="text-[#2e2a25]">Tady psi žijí jako členové rodiny.</h2>
+              <p class="mt-6 text-[18px] text-brand-muted">Aureum Vellum stojí na klidném domácím zázemí, každodenním kontaktu s lidmi a respektu k povaze retrívra.</p>
+              <p class="mt-4 text-[18px] text-brand-muted">Každý vrh plánujeme s rozvahou. Zajímá nás zdraví rodičů, jejich temperament, typický exteriér i to, aby se štěňata dostala do zodpovědných rodin.</p>
+              <a class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark" href="#psi">Poznat naše psy <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="relative min-h-[520px]">
+              <img class="ml-auto h-[520px] w-[82%] rounded-[30px] object-cover shadow-soft" src="/assets/enhanced/sana-profile-close.webp" alt="Profil světlého retrívra" loading="lazy">
+              <div class="absolute bottom-0 left-0 w-[min(360px,72%)] rounded-[28px] border border-brand-gold/20 bg-white p-7 shadow-soft">
+                <span class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">Filozofie chovu</span>
+                <strong class="mt-3 block font-serif text-[34px] leading-[1.02] text-[#2e2a25]">Zdraví, povaha, socializace a laskavý začátek.</strong>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="section soft" id="psi">
-          <div class="section-heading">
-            <p class="eyebrow">Naši psi</p>
-            <h2>Základ chovu Aureum Vellum</h2>
-            <p>Při výběru chovných psů klademe důraz na zdraví, vyrovnanou povahu a typický výraz retrívra.</p>
-          </div>
-          <div class="category-grid">
-            <a class="category-card" href="/feny.html">
-              <img src="/assets/enhanced/sana-orchard-front.webp" alt="Chovná fena retrívra v sadu" loading="lazy">
-              <span>Feny</span>
-              <strong>Naše chovné feny</strong>
-            </a>
-            <a class="category-card" href="/kryci-psi.html">
-              <img src="/assets/enhanced/sana-orchard-sitting.webp" alt="Krycí pes retrívra" loading="lazy">
-              <span>Psi</span>
-              <strong>Krycí psi</strong>
-            </a>
-            <a class="category-card" href="/odchovy.html">
-              <img src="/assets/enhanced/puppy-porch-flowers.webp" alt="Mladý pes z odchovu" loading="lazy">
-              <span>Odchovy</span>
-              <strong>Naši odchovanci</strong>
-            </a>
-          </div>
-          <div class="dog-grid">${dogCards}</div>
-        </section>
-
-        <section class="section litter-section" id="stenata">
-          <div class="litter-visual">
-            <img src="${escapeHtml(litterImage)}" alt="${escapeHtml(litterTitle)}" loading="lazy">
-          </div>
-          <div class="litter-panel">
-            <p class="eyebrow">Štěňata</p>
-            <h2>${escapeHtml(litterTitle)}</h2>
-            <p>${escapeHtml(litterText)}</p>
-            <dl class="info-list">
-              <div><dt>Stav</dt><dd>${escapeHtml(featuredLitter?.status || 'plánováno')}</dd></div>
-              <div><dt>Datum</dt><dd>${escapeHtml(formatDate(featuredLitter?.birthDate || featuredLitter?.expectedDate))}</dd></div>
-              <div><dt>Štěňata</dt><dd>${escapeHtml(String(featuredLitter?.puppyCount ?? 0))}</dd></div>
-            </dl>
-            <a class="button primary" href="#kontakt">Mám zájem o štěně</a>
+        <section class="bg-brand-soft px-4 py-20 sm:px-6 lg:px-10 lg:py-28" id="psi">
+          <div class="mx-auto max-w-[1440px]">
+            ${renderSectionHeading(
+              'Naši psi',
+              'Základ chovu Aureum Vellum',
+              'Při výběru chovných psů klademe důraz na zdraví, vyrovnanou povahu a typický výraz retrívra.',
+            )}
+            <div class="grid gap-6 md:grid-cols-3">
+              <a class="group overflow-hidden rounded-[28px] border border-black/8 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover" href="/feny.html">
+                <img class="h-[280px] w-full object-cover" src="/assets/enhanced/sana-orchard-front.webp" alt="Chovná fena retrívra v sadu" loading="lazy">
+                <div class="grid gap-3 p-6">
+                  <span class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">Feny</span>
+                  <strong class="font-serif text-[34px] leading-[1.02] text-[#2e2a25] transition group-hover:text-brand-goldDark">Naše chovné feny</strong>
+                </div>
+              </a>
+              <a class="group overflow-hidden rounded-[28px] border border-black/8 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover" href="/kryci-psi.html">
+                <img class="h-[280px] w-full object-cover" src="/assets/enhanced/sana-orchard-sitting.webp" alt="Krycí pes retrívra" loading="lazy">
+                <div class="grid gap-3 p-6">
+                  <span class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">Psi</span>
+                  <strong class="font-serif text-[34px] leading-[1.02] text-[#2e2a25] transition group-hover:text-brand-goldDark">Krycí psi</strong>
+                </div>
+              </a>
+              <a class="group overflow-hidden rounded-[28px] border border-black/8 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover" href="/odchovy.html">
+                <img class="h-[280px] w-full object-cover" src="/assets/enhanced/puppy-porch-flowers.webp" alt="Mladý pes z odchovu" loading="lazy">
+                <div class="grid gap-3 p-6">
+                  <span class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">Odchovy</span>
+                  <strong class="font-serif text-[34px] leading-[1.02] text-[#2e2a25] transition group-hover:text-brand-goldDark">Naši odchovanci</strong>
+                </div>
+              </a>
+            </div>
+            <div class="mt-10 grid gap-6 md:grid-cols-2">${dogCards}</div>
           </div>
         </section>
 
-        <section class="section health" id="zdravi">
-          <div class="section-copy">
-            <p class="eyebrow">Zdraví a dokumentace</p>
-            <h2>Zodpovědný chov je pro nás samozřejmost.</h2>
-            <p>Naši psi splňují chovné podmínky a absolvují zdravotní i genetická vyšetření. Detailní výsledky patří do profilů jednotlivých psů.</p>
-          </div>
-          <div class="health-grid">
-            <article><strong>DKK / DLK</strong><span>vyšetření kyčlí a loktů</span></article>
-            <article><strong>Oči a srdce</strong><span>kontrola důležitých oblastí zdraví</span></article>
-            <article><strong>DNA testy</strong><span>PRA, ICT a další dle plemene</span></article>
-            <article><strong>PP a osvědčení</strong><span>náhledy dokumentů a výsledků</span></article>
-          </div>
-        </section>
-
-        <section class="section contact" id="kontakt">
-          <div class="contact-info">
-            <p class="eyebrow">Kontakt</p>
-            <h2>Máte zájem o štěně nebo se chcete zeptat?</h2>
-            <p>Budeme rádi, když nám napíšete něco o sobě, svých zkušenostech a představě o společném životě se psem.</p>
-            <div class="contact-lines">
-              <a href="mailto:info@aureumvellum.cz">info@aureumvellum.cz</a>
-              <a href="tel:+420777000000">+420 777 000 000</a>
-              <span>Česká republika</span>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28" id="stenata">
+          <div class="mx-auto grid max-w-[1440px] items-center gap-12 lg:grid-cols-[minmax(320px,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
+            <div class="overflow-hidden rounded-[34px] shadow-soft">
+              <img class="h-full w-full object-cover" src="${escapeHtml(litterImage)}" alt="${escapeHtml(litterTitle)}" loading="lazy">
+            </div>
+            <div class="rounded-[34px] border border-black/8 bg-white p-8 shadow-soft sm:p-10">
+              <p class="${eyebrowClass()}">Štěňata</p>
+              <h2 class="text-[#2e2a25]">${escapeHtml(litterTitle)}</h2>
+              <p class="mt-5 text-[18px] text-brand-muted">${escapeHtml(litterText)}</p>
+              <div class="mt-8">
+                ${renderMetaList([
+                  { label: 'Stav', value: getLitterStatusLabel(featuredLitter?.status) },
+                  { label: 'Datum', value: formatDate(featuredLitter?.birthDate || featuredLitter?.expectedDate) },
+                  { label: 'Štěňata', value: String(featuredLitter?.puppyCount ?? 0) },
+                ])}
+              </div>
+              <a class="${joinClasses(buttonClass('primary'), 'mt-8')}" href="#kontakt">Mám zájem o štěně</a>
             </div>
           </div>
-          <form class="contact-form" data-contact-form>
-            <h3>Formulář pro zájemce o štěně</h3>
-            <div class="form-row">
-              <label>Jméno a příjmení<input name="name" autocomplete="name" required></label>
-              <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        </section>
+
+        <section class="bg-brand-soft px-4 py-20 sm:px-6 lg:px-10 lg:py-28" id="zdravi">
+          <div class="mx-auto grid max-w-[1440px] items-start gap-12 lg:grid-cols-[minmax(0,0.94fr)_minmax(320px,1.06fr)] lg:gap-20">
+            <div class="max-w-[680px]">
+              <p class="${eyebrowClass()}">Zdraví a dokumentace</p>
+              <h2 class="text-[#2e2a25]">Zodpovědný chov je pro nás samozřejmost.</h2>
+              <p class="mt-6 text-[18px] text-brand-muted">Naši psi splňují chovné podmínky a absolvují zdravotní i genetická vyšetření. Detailní výsledky patří do profilů jednotlivých psů.</p>
             </div>
-            <div class="form-row">
-              <label>Telefon<input name="phone" autocomplete="tel" required></label>
-              <label>O jaký vrh máte zájem?
-                <select name="litter" required>
-                  <option value="">Vyberte</option>
-                  ${litters
-                    .map((litter) => `<option>${escapeHtml(litter.name)}</option>`)
-                    .join('')}
-                  <option>Jen předběžný zájem</option>
-                </select>
+            <div class="grid gap-4 sm:grid-cols-2">
+              ${[
+                ['DKK / DLK', 'Vyšetření kyčlí a loktů'],
+                ['Oči a srdce', 'Kontrola důležitých oblastí zdraví'],
+                ['DNA testy', 'PRA, ICT a další dle plemene'],
+                ['PP a osvědčení', 'Náhledy dokumentů a výsledků'],
+              ]
+                .map(
+                  ([title, text]) => `<article class="rounded-[24px] border border-black/8 bg-white p-6 shadow-card">
+                    <strong class="block font-serif text-[28px] leading-[1.05] text-[#2e2a25]">${escapeHtml(title)}</strong>
+                    <span class="mt-3 block text-[15px] text-brand-muted">${escapeHtml(text)}</span>
+                  </article>`,
+                )
+                .join('')}
+            </div>
+          </div>
+        </section>
+
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28" id="kontakt">
+          <div class="mx-auto grid max-w-[1440px] items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,1.1fr)] lg:gap-20">
+            <div class="max-w-[680px]">
+              <p class="${eyebrowClass()}">Kontakt</p>
+              <h2 class="text-[#2e2a25]">Máte zájem o štěně nebo se chcete zeptat?</h2>
+              <p class="mt-6 text-[18px] text-brand-muted">Budeme rádi, když nám napíšete něco o sobě, svých zkušenostech a představě o společném životě se psem.</p>
+              <div class="mt-8 grid gap-3 text-[17px] text-brand-goldDark">
+                <a class="font-semibold hover:text-brand-gold" href="mailto:info@aureumvellum.cz">info@aureumvellum.cz</a>
+                <a class="font-semibold hover:text-brand-gold" href="tel:+420777000000">+420 777 000 000</a>
+                <span>Česká republika</span>
+              </div>
+            </div>
+            <form class="rounded-[34px] border border-black/8 bg-white p-8 shadow-soft sm:p-10" data-contact-form action="/api/contact" method="post">
+              <h3 class="text-[#2e2a25]">Formulář pro zájemce o štěně</h3>
+              <div class="mt-6 grid gap-5 md:grid-cols-2">
+                <label>Jméno a příjmení<input name="name" autocomplete="name" required></label>
+                <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+              </div>
+              <div class="mt-5 grid gap-5 md:grid-cols-2">
+                <label>Telefon<input name="phone" autocomplete="tel" required></label>
+                <label>O jaký vrh máte zájem?
+                  <select name="litter" required>
+                    <option value="">Vyberte</option>
+                    ${litters.map((litter) => `<option>${escapeHtml(litter.name)}</option>`).join('')}
+                    <option>Jen předběžný zájem</option>
+                  </select>
+                </label>
+              </div>
+              <div class="mt-5 grid gap-5">
+                <label>Kde bydlíte?<input name="home" placeholder="Město + typ bydlení" required></label>
+                <label>Zkušenosti se psy<textarea name="experience" rows="4" required></textarea></label>
+                <label>Co od psa očekáváte?<textarea name="expectation" rows="4" required></textarea></label>
+              </div>
+              <label class="mt-5 flex items-start gap-3 text-[14px] font-semibold text-brand-muted">
+                <input class="mt-1 h-4 w-4 min-h-0 rounded border-black/20" type="checkbox" required>
+                <span>Souhlasím se zpracováním osobních údajů za účelem odpovědi na poptávku.</span>
               </label>
-            </div>
-            <label>Kde bydlíte?<input name="home" placeholder="Město + typ bydlení" required></label>
-            <label>Zkušenosti se psy<textarea name="experience" rows="4" required></textarea></label>
-            <label>Co od psa očekáváte?<textarea name="expectation" rows="4" required></textarea></label>
-            <label class="checkbox">
-              <input type="checkbox" required>
-              <span>Souhlasím se zpracováním osobních údajů za účelem odpovědi na poptávku.</span>
-            </label>
-            <button class="button primary" type="submit">Odeslat zprávu</button>
-            <p class="form-message" role="status" data-form-message></p>
-          </form>
+              <button class="${joinClasses(buttonClass('primary'), 'mt-6 w-full sm:w-auto')}" type="submit">Odeslat zprávu</button>
+              <p class="mt-4 text-[14px] text-brand-muted" role="status" data-form-message></p>
+            </form>
+          </div>
         </section>
       </main>
       ${siteFooter()}`,
@@ -432,16 +549,18 @@ export async function renderDogListPage({
     description,
     body: `${siteHeader()}
       <main>
-        <section class="page-hero">
-          <div>
-            <a class="text-link back-link" href="/#psi">Zpět na naše psy</a>
-            <p class="eyebrow">${escapeHtml(typeLabel)}</p>
-            <h1>${escapeHtml(title)}</h1>
-            <p>${escapeHtml(description)}</p>
+        <section class="bg-brand-paper px-4 pb-16 pt-36 sm:px-6 lg:px-10 lg:pb-20 lg:pt-44">
+          <div class="mx-auto max-w-[1440px]">
+            <a class="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark" href="/#psi">Zpět na naše psy <span aria-hidden="true">→</span></a>
+            <div class="mt-8 max-w-[920px]">
+              <p class="${eyebrowClass()}">${escapeHtml(typeLabel)}</p>
+              <h1 class="mt-3 text-[#2e2a25]">${escapeHtml(title)}</h1>
+              <p class="mt-6 max-w-[700px] text-[19px] text-brand-muted">${escapeHtml(description)}</p>
+            </div>
           </div>
         </section>
-        <section class="section soft">
-          <div class="dog-grid listing-grid">${cards}</div>
+        <section class="bg-brand-soft px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
+          <div class="mx-auto grid max-w-[1440px] gap-6 md:grid-cols-2 xl:grid-cols-3">${cards}</div>
         </section>
       </main>
       ${siteFooter()}`,
@@ -454,16 +573,21 @@ export async function renderLittersPage(): Promise<string> {
   const litterCards = litters
     .map((litter) => {
       const puppies = (litter.puppies as Dog[] | null | undefined)?.length ?? 0
-      return `<a class="profile-card litter-card" href="/vrhy/${escapeHtml(litter.slug)}">
-        <p class="chip">${escapeHtml(litter.name)}</p>
-        <h3>${escapeHtml(litter.headline || litter.name)}</h3>
-        <p>${escapeHtml(litter.summary || 'Podrobnosti k vrhu doplníme.')}</p>
-        <dl class="profile-meta compact">
-          <div><dt>Stav</dt><dd>${escapeHtml(litter.status)}</dd></div>
-          <div><dt>Datum</dt><dd>${escapeHtml(formatDate(litter.birthDate || litter.expectedDate))}</dd></div>
-          <div><dt>Štěňata</dt><dd>${escapeHtml(String(litter.puppyCount ?? puppies))}</dd></div>
-        </dl>
-        <span class="card-link">Otevřít vrh</span>
+      return `<a class="group rounded-[28px] border border-black/8 bg-white p-7 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-cardHover" href="/vrhy/${escapeHtml(litter.slug)}">
+        <p class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">${escapeHtml(litter.name)}</p>
+        <h3 class="text-[#2e2a25] transition group-hover:text-brand-goldDark">${escapeHtml(litter.headline || litter.name)}</h3>
+        <p class="mt-4 text-[16px] text-brand-muted">${escapeHtml(litter.summary || 'Podrobnosti k vrhu doplníme.')}</p>
+        <div class="mt-6">
+          ${renderMetaList(
+            [
+              { label: 'Stav', value: getLitterStatusLabel(litter.status) },
+              { label: 'Datum', value: formatDate(litter.birthDate || litter.expectedDate) },
+              { label: 'Štěňata', value: String(litter.puppyCount ?? puppies) },
+            ],
+            'compact',
+          )}
+        </div>
+        <span class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark">Otevřít vrh <span aria-hidden="true">→</span></span>
       </a>`
     })
     .join('')
@@ -477,25 +601,26 @@ export async function renderLittersPage(): Promise<string> {
     description: 'Přehled vrhů a odchovanců chovatelské stanice Aureum Vellum.',
     body: `${siteHeader()}
       <main>
-        <section class="page-hero">
-          <div>
-            <a class="text-link back-link" href="/#psi">Zpět na naše psy</a>
-            <p class="eyebrow">Odchovy</p>
-            <h1>Naši odchovanci</h1>
-            <p>Prostor pro štěňata z našich vrhů, jejich nové domovy a pozdější zprávy o tom, jak rostou.</p>
+        <section class="bg-brand-paper px-4 pb-16 pt-36 sm:px-6 lg:px-10 lg:pb-20 lg:pt-44">
+          <div class="mx-auto max-w-[1440px]">
+            <a class="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark" href="/#psi">Zpět na naše psy <span aria-hidden="true">→</span></a>
+            <div class="mt-8 max-w-[920px]">
+              <p class="${eyebrowClass()}">Odchovy</p>
+              <h1 class="mt-3 text-[#2e2a25]">Naši odchovanci</h1>
+              <p class="mt-6 max-w-[700px] text-[19px] text-brand-muted">Prostor pro štěňata z našich vrhů, jejich nové domovy a pozdější zprávy o tom, jak rostou.</p>
+            </div>
           </div>
         </section>
 
-        <section class="section soft">
-          <div class="profile-grid">${litterCards}</div>
+        <section class="bg-brand-soft px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
+          <div class="mx-auto grid max-w-[1440px] gap-6 lg:grid-cols-2">${litterCards}</div>
         </section>
 
-        <section class="section">
-          <div class="section-heading">
-            <p class="eyebrow">Odchovanci</p>
-            <h2>Štěňata a mladí psi z našich vrhů</h2>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto max-w-[1440px]">
+            ${renderSectionHeading('Odchovanci', 'Štěňata a mladí psi z našich vrhů')}
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">${offspringCards}</div>
           </div>
-          <div class="dog-grid">${offspringCards}</div>
         </section>
       </main>
       ${siteFooter()}`,
@@ -541,12 +666,21 @@ export async function renderDogPage(dog: PopulatedDog): Promise<string> {
   )
 
   const healthTests =
-    dog.healthTests?.map((test) => `<li>${escapeHtml(test.testName)}: ${escapeHtml(test.result)}</li>`).join('') ||
-    '<li>Podrobnosti doplníme</li>'
+    dog.healthTests?.length
+      ? `<ul class="grid gap-3 text-[16px] text-brand-muted">${dog.healthTests
+          .map(
+            (test) =>
+              `<li class="rounded-2xl border border-black/8 bg-brand-soft px-4 py-3"><strong class="text-[#2e2a25]">${escapeHtml(test.testName)}:</strong> ${escapeHtml(test.result)}</li>`,
+          )
+          .join('')}</ul>`
+      : '<p class="text-[16px] text-brand-muted">Podrobnosti doplníme.</p>'
 
   const awards =
-    dog.titlesAndAwards?.map((award) => `<li>${escapeHtml(award.title)}</li>`).join('') ||
-    'Výsledky a dokumentaci doplníme.'
+    dog.titlesAndAwards?.length
+      ? `<ul class="grid gap-3 text-[16px] text-brand-muted">${dog.titlesAndAwards
+          .map((award) => `<li class="rounded-2xl border border-black/8 bg-brand-soft px-4 py-3">${escapeHtml(award.title)}</li>`)
+          .join('')}</ul>`
+      : '<p class="text-[16px] text-brand-muted">Výsledky a dokumentaci doplníme.</p>'
 
   return pageShell({
     title: `${dog.name} | ${SITE_NAME}`,
@@ -554,52 +688,77 @@ export async function renderDogPage(dog: PopulatedDog): Promise<string> {
     socialImage: image,
     body: `${siteHeader()}
       <main>
-        <section class="page-hero">
-          <div>
-            <a class="text-link back-link" href="/#psi">Zpět na naše psy</a>
-            <p class="eyebrow">${escapeHtml(dog.dogType === 'female' ? 'Chovná fena' : dog.dogType === 'male' ? 'Krycí pes' : 'Odchovanec')}</p>
-            <h1>${escapeHtml(dog.name)}</h1>
-            <p>${escapeHtml(dog.headline || dog.summary || 'Profil psa.')}</p>
+        <section class="bg-brand-paper px-4 pb-16 pt-36 sm:px-6 lg:px-10 lg:pb-20 lg:pt-44">
+          <div class="mx-auto max-w-[1440px]">
+            <a class="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark" href="/#psi">Zpět na naše psy <span aria-hidden="true">→</span></a>
+            <div class="mt-8 max-w-[920px]">
+              <p class="${eyebrowClass()}">${escapeHtml(
+                dog.dogType === 'female' ? 'Chovná fena' : dog.dogType === 'male' ? 'Krycí pes' : 'Odchovanec',
+              )}</p>
+              <h1 class="mt-3 text-[#2e2a25]">${escapeHtml(dog.name)}</h1>
+              <p class="mt-6 max-w-[700px] text-[19px] text-brand-muted">${escapeHtml(dog.headline || dog.summary || 'Profil psa.')}</p>
+            </div>
           </div>
         </section>
 
-        <section class="section profile-layout">
-          <div class="profile-photo">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(dog.name)}">
-          </div>
-          <div class="profile-summary">
-            <p class="eyebrow">Profil psa</p>
-            <h2>${escapeHtml(dog.headline || dog.name)}</h2>
-            <p>${escapeHtml(dog.description || dog.summary || 'Detailní profil tohoto psa připravujeme.')}</p>
-            <dl class="profile-meta">
-              <div><dt>Datum narození</dt><dd>${escapeHtml(formatDate(dog.dateOfBirth))}</dd></div>
-              <div><dt>Barva</dt><dd>${escapeHtml(dog.color || 'doplníme')}</dd></div>
-              <div><dt>Matka</dt><dd>${escapeHtml((dog.mother && typeof dog.mother === 'object' ? dog.mother.name : null) || 'doplníme')}</dd></div>
-              <div><dt>Otec</dt><dd>${escapeHtml((dog.father && typeof dog.father === 'object' ? dog.father.name : null) || 'doplníme')}</dd></div>
-            </dl>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto grid max-w-[1440px] items-start gap-12 lg:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+            <div class="overflow-hidden rounded-[34px] shadow-soft">
+              <img class="h-full w-full object-cover" src="${escapeHtml(image)}" alt="${escapeHtml(dog.name)}">
+            </div>
+            <div class="rounded-[34px] border border-black/8 bg-white p-8 shadow-soft sm:p-10">
+              <p class="${eyebrowClass()}">Profil psa</p>
+              <h2 class="text-[#2e2a25]">${escapeHtml(dog.headline || dog.name)}</h2>
+              <p class="mt-5 text-[18px] text-brand-muted">${escapeHtml(dog.description || dog.summary || 'Detailní profil tohoto psa připravujeme.')}</p>
+              <div class="mt-8">
+                ${renderMetaList([
+                  { label: 'Datum narození', value: formatDate(dog.dateOfBirth) },
+                  { label: 'Barva', value: dog.color || 'Doplníme' },
+                  {
+                    label: 'Matka',
+                    value: (dog.mother && typeof dog.mother === 'object' ? dog.mother.name : null) || 'Doplníme',
+                  },
+                  {
+                    label: 'Otec',
+                    value: (dog.father && typeof dog.father === 'object' ? dog.father.name : null) || 'Doplníme',
+                  },
+                ])}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section class="section soft">
-          <div class="profile-grid">
-            <article class="profile-card">
-              <h3>Zdraví</h3>
-              <ul class="profile-list">${healthTests}</ul>
+        <section class="bg-brand-soft px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto grid max-w-[1440px] gap-6 lg:grid-cols-2">
+            <article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+              <h3 class="text-[#2e2a25]">Zdraví</h3>
+              <div class="mt-5">${healthTests}</div>
             </article>
-            <article class="profile-card">
-              <h3>Povaha a shrnutí</h3>
-              <p>${escapeHtml(dog.summary || dog.description || 'Profil a povahu doplníme.')}</p>
+            <article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+              <h3 class="text-[#2e2a25]">Povaha a shrnutí</h3>
+              <p class="mt-5 text-[16px] text-brand-muted">${escapeHtml(dog.summary || dog.description || 'Profil a povahu doplníme.')}</p>
             </article>
-            <article class="profile-card">
-              <h3>Rodokmen</h3>
-              <dl class="profile-meta compact">
-                <div><dt>Otec</dt><dd>${escapeHtml((dog.father && typeof dog.father === 'object' ? dog.father.name : null) || 'doplníme')}</dd></div>
-                <div><dt>Matka</dt><dd>${escapeHtml((dog.mother && typeof dog.mother === 'object' ? dog.mother.name : null) || 'doplníme')}</dd></div>
-              </dl>
+            <article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+              <h3 class="text-[#2e2a25]">Rodokmen</h3>
+              <div class="mt-5">
+                ${renderMetaList(
+                  [
+                    {
+                      label: 'Otec',
+                      value: (dog.father && typeof dog.father === 'object' ? dog.father.name : null) || 'Doplníme',
+                    },
+                    {
+                      label: 'Matka',
+                      value: (dog.mother && typeof dog.mother === 'object' ? dog.mother.name : null) || 'Doplníme',
+                    },
+                  ],
+                  'compact',
+                )}
+              </div>
             </article>
-            <article class="profile-card">
-              <h3>Tituly a ocenění</h3>
-              <p>${awards}</p>
+            <article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+              <h3 class="text-[#2e2a25]">Tituly a ocenění</h3>
+              <div class="mt-5">${awards}</div>
             </article>
           </div>
         </section>
@@ -613,20 +772,20 @@ export async function renderLitterPage(litter: PopulatedLitter): Promise<string>
   const puppies = ((litter.puppies as Dog[] | null | undefined) ?? []) as PopulatedDog[]
   const puppyCards = puppies.length
     ? puppies.map((dog) => dogCard(dog, '/assets/enhanced/puppy-porch-flowers.webp', 'Odchovanec z vrhu')).join('')
-    : '<article class="profile-card"><h3>Profily připravujeme</h3><p>U tohoto vrhu zatím nejsou zveřejněné jednotlivé profily štěňat.</p></article>'
+    : emptyCard('Profily připravujeme', 'U tohoto vrhu zatím nejsou zveřejněné jednotlivé profily štěňat.')
 
   const updates =
     litter.updates?.length
       ? litter.updates
           .map(
-            (update) => `<article class="profile-card">
-              <p class="chip">${escapeHtml(formatDate(update.date))}</p>
-              <h3>${escapeHtml(update.title)}</h3>
-              <p>${escapeHtml(update.text || 'Další podrobnosti doplníme.')}</p>
+            (update) => `<article class="rounded-[28px] border border-black/8 bg-white p-8 shadow-card">
+              <p class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-goldDark">${escapeHtml(formatDate(update.date))}</p>
+              <h3 class="text-[#2e2a25]">${escapeHtml(update.title)}</h3>
+              <p class="mt-4 text-[16px] text-brand-muted">${escapeHtml(update.text || 'Další podrobnosti doplníme.')}</p>
             </article>`,
           )
           .join('')
-      : '<article class="profile-card"><h3>Aktuality doplníme</h3><p>Jakmile budou k vrhu nové informace, objeví se právě tady.</p></article>'
+      : emptyCard('Aktuality doplníme', 'Jakmile budou k vrhu nové informace, objeví se právě tady.')
 
   const motherName = litter.mother && typeof litter.mother === 'object' ? litter.mother.name : null
   const fatherName = litter.father && typeof litter.father === 'object' ? litter.father.name : null
@@ -637,49 +796,56 @@ export async function renderLitterPage(litter: PopulatedLitter): Promise<string>
     socialImage: image,
     body: `${siteHeader()}
       <main>
-        <section class="page-hero">
-          <div>
-            <a class="text-link back-link" href="/odchovy.html">Zpět na odchovy</a>
-            <p class="eyebrow">Vrh</p>
-            <h1>${escapeHtml(litter.headline || litter.name)}</h1>
-            <p>${escapeHtml(litter.summary || 'Přehled vrhu a štěňat z tohoto období.')}</p>
+        <section class="bg-brand-paper px-4 pb-16 pt-36 sm:px-6 lg:px-10 lg:pb-20 lg:pt-44">
+          <div class="mx-auto max-w-[1440px]">
+            <a class="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-brand-goldDark" href="/odchovy.html">Zpět na odchovy <span aria-hidden="true">→</span></a>
+            <div class="mt-8 max-w-[920px]">
+              <p class="${eyebrowClass()}">Vrh</p>
+              <h1 class="mt-3 text-[#2e2a25]">${escapeHtml(litter.headline || litter.name)}</h1>
+              <p class="mt-6 max-w-[700px] text-[19px] text-brand-muted">${escapeHtml(litter.summary || 'Přehled vrhu a štěňat z tohoto období.')}</p>
+            </div>
           </div>
         </section>
 
-        <section class="section profile-layout">
-          <div class="profile-photo">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(litter.name)}">
-          </div>
-          <div class="profile-summary">
-            <p class="eyebrow">${escapeHtml(litter.name)}</p>
-            <h2>${escapeHtml(litter.headline || 'Přehled celého vrhu')}</h2>
-            <p>${escapeHtml(litter.story || litter.summary || 'Detailní popis vrhu doplníme.')}</p>
-            <dl class="profile-meta">
-              <div><dt>Stav</dt><dd>${escapeHtml(litter.status)}</dd></div>
-              <div><dt>Datum</dt><dd>${escapeHtml(formatDate(litter.birthDate || litter.expectedDate))}</dd></div>
-              <div><dt>Matka</dt><dd>${escapeHtml(motherName || 'doplníme')}</dd></div>
-              <div><dt>Otec</dt><dd>${escapeHtml(fatherName || 'doplníme')}</dd></div>
-              <div><dt>Štěňata</dt><dd>${escapeHtml(String(litter.puppyCount ?? puppies.length))}</dd></div>
-              <div><dt>Volná</dt><dd>${escapeHtml(String(litter.availablePuppies ?? 0))}</dd></div>
-            </dl>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto grid max-w-[1440px] items-start gap-12 lg:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+            <div class="overflow-hidden rounded-[34px] shadow-soft">
+              <img class="h-full w-full object-cover" src="${escapeHtml(image)}" alt="${escapeHtml(litter.name)}">
+            </div>
+            <div class="rounded-[34px] border border-black/8 bg-white p-8 shadow-soft sm:p-10">
+              <p class="${eyebrowClass()}">${escapeHtml(litter.name)}</p>
+              <h2 class="text-[#2e2a25]">${escapeHtml(litter.headline || 'Přehled celého vrhu')}</h2>
+              <p class="mt-5 text-[18px] text-brand-muted">${escapeHtml(litter.story || litter.summary || 'Detailní popis vrhu doplníme.')}</p>
+              <div class="mt-8">
+                ${renderMetaList([
+                  { label: 'Stav', value: getLitterStatusLabel(litter.status) },
+                  { label: 'Datum', value: formatDate(litter.birthDate || litter.expectedDate) },
+                  { label: 'Matka', value: motherName || 'Doplníme' },
+                  { label: 'Otec', value: fatherName || 'Doplníme' },
+                  { label: 'Štěňata', value: String(litter.puppyCount ?? puppies.length) },
+                  { label: 'Volná', value: String(litter.availablePuppies ?? 0) },
+                ])}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section class="section soft">
-          <div class="section-heading">
-            <p class="eyebrow">Štěňata z vrhu</p>
-            <h2>${escapeHtml(litter.name)}</h2>
-            <p>Tady jsou zobrazená pouze štěňata přiřazená k tomuto konkrétnímu vrhu.</p>
+        <section class="bg-brand-soft px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto max-w-[1440px]">
+            ${renderSectionHeading(
+              'Štěňata z vrhu',
+              litter.name,
+              'Tady jsou zobrazená pouze štěňata přiřazená k tomuto konkrétnímu vrhu.',
+            )}
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">${puppyCards}</div>
           </div>
-          <div class="dog-grid">${puppyCards}</div>
         </section>
 
-        <section class="section">
-          <div class="section-heading">
-            <p class="eyebrow">Aktuality</p>
-            <h2>Historie a důležité momenty vrhu</h2>
+        <section class="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+          <div class="mx-auto max-w-[1440px]">
+            ${renderSectionHeading('Aktuality', 'Historie a důležité momenty vrhu')}
+            <div class="grid gap-6 lg:grid-cols-2">${updates}</div>
           </div>
-          <div class="profile-grid">${updates}</div>
         </section>
       </main>
       ${siteFooter()}`,

@@ -5,7 +5,7 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: 'alt',
     defaultColumns: ['filename', 'alt', 'mediaCategory', 'updatedAt'],
-    group: 'Obsah webu',
+    group: 'Web',
   },
   labels: {
     singular: 'Médium',
@@ -20,6 +20,9 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Alternativní text',
+      admin: {
+        description: 'Krátký popis fotografie pro přístupnost a vyhledávání.',
+      },
     },
     {
       name: 'caption',
@@ -29,15 +32,15 @@ export const Media: CollectionConfig = {
     {
       name: 'mediaCategory',
       type: 'select',
-      label: 'Kategorie média',
+      label: 'Kategorie',
       defaultValue: 'general',
       options: [
         {
-          label: 'Fotka psa',
+          label: 'Pes',
           value: 'dog',
         },
         {
-          label: 'Fotka vrhu',
+          label: 'Vrh',
           value: 'litter',
         },
         {

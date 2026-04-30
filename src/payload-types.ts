@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     dogs: Dog;
     litters: Litter;
+    inquiries: Inquiry;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     dogs: DogsSelect<false> | DogsSelect<true>;
     litters: LittersSelect<false> | LittersSelect<true>;
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -152,6 +154,9 @@ export interface User {
  */
 export interface Media {
   id: number;
+  /**
+   * Krátký popis fotografie pro přístupnost a vyhledávání.
+   */
   alt: string;
   caption?: string | null;
   mediaCategory?: ('dog' | 'litter' | 'site' | 'general') | null;
@@ -198,29 +203,20 @@ export interface Dog {
   slug: string;
   dogType: 'female' | 'male' | 'offspring';
   status: 'active' | 'planned' | 'archived';
-  /**
-   * Krátký text pro kartu nebo úvod profilu.
-   */
   headline?: string | null;
   /**
-   * Krátké shrnutí pro výpisy a náhledy.
+   * Krátký text pro karty, přehledy a úvod profilu.
    */
   summary?: string | null;
-  /**
-   * Delší text pro detailní profil psa.
-   */
   description?: string | null;
   dateOfBirth?: string | null;
   color?: string | null;
   mother?: (number | null) | Dog;
   father?: (number | null) | Dog;
   /**
-   * Hlavní obrázek pro kartu, hero sekci a profil.
+   * Používá se na kartách, hero sekcích a detailu profilu.
    */
   featuredImage?: (number | null) | Media;
-  /**
-   * Další upravitelné fotografie tohoto psa.
-   */
   gallery?:
     | {
         image: number | Media;
@@ -228,9 +224,6 @@ export interface Dog {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Strukturovaný přehled zdravotních a DNA testů.
-   */
   healthTests?:
     | {
         testName: string;
@@ -262,13 +255,7 @@ export interface Litter {
   slug: string;
   status: 'planned' | 'expected' | 'born' | 'archived';
   headline?: string | null;
-  /**
-   * Krátký úvod pro kartu, přehled nebo sekci na webu.
-   */
   summary?: string | null;
-  /**
-   * Delší text a poznámky k vrhu.
-   */
   story?: string | null;
   mother: number | Dog;
   father: number | Dog;
@@ -276,9 +263,6 @@ export interface Litter {
   expectedDate?: string | null;
   puppyCount?: number | null;
   availablePuppies?: number | null;
-  /**
-   * Hlavní fotografie používaná u tohoto vrhu.
-   */
   featuredImage?: (number | null) | Media;
   gallery?:
     | {
@@ -287,13 +271,7 @@ export interface Litter {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Propojení na štěňata nebo odchovance patřící k tomuto vrhu.
-   */
   puppies?: (number | Dog)[] | null;
-  /**
-   * Krátké novinky a milníky pro rodiny i návštěvníky webu.
-   */
   updates?:
     | {
         title: string;
@@ -303,6 +281,30 @@ export interface Litter {
       }[]
     | null;
   published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: number;
+  status: 'new' | 'contacted' | 'waiting' | 'closed';
+  contactedAt?: string | null;
+  source?: string | null;
+  /**
+   * Poznámky pro správce. Na webu se nezobrazují.
+   */
+  internalNotes?: string | null;
+  name: string;
+  email: string;
+  phone: string;
+  litter?: string | null;
+  home: string;
+  experience: string;
+  expectation: string;
+  consent: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -345,6 +347,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'litters';
         value: number | Litter;
+      } | null)
+    | ({
+        relationTo: 'inquiries';
+        value: number | Inquiry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -531,6 +537,26 @@ export interface LittersSelect<T extends boolean = true> {
         id?: T;
       };
   published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  status?: T;
+  contactedAt?: T;
+  source?: T;
+  internalNotes?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  litter?: T;
+  home?: T;
+  experience?: T;
+  expectation?: T;
+  consent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
